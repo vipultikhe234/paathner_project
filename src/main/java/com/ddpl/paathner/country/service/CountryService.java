@@ -1,5 +1,9 @@
 package com.ddpl.paathner.country.service;
 
-public class CountryService {
+import com.ddpl.paathner.country.CountryDto;
+
+public interface CountryService {
+	
+	CountryDto insertCountry(CountryDto countryDto);
 
 }
