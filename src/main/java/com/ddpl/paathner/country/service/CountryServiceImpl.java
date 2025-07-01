@@ -1,21 +1,24 @@
 package com.ddpl.paathner.country.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ddpl.paathner.country.Country;
 import com.ddpl.paathner.country.CountryDto;
+import com.ddpl.paathner.country.CountryMapper;
 import com.ddpl.paathner.country.CountryRepository;
 
 @Service
-public class CountryServiceImpl implements CountryService{
+public class CountryServiceImpl implements CountryService {
 
-	private CountryRepository countryRepository;
-	
-	public CountryServiceImpl(CountryRepository countryRepository) {
-		this.countryRepository=countryRepository;
-	}
+	@Autowired
+	CountryRepository countryRepository;
+
 	@Override
 	public CountryDto insertCountry(CountryDto countryDto) {
-		return null;
+		Country country = CountryMapper.mapToCountry(countryDto);
+		Country savedCountry = countryRepository.save(country);
+		return CountryMapper.mapToAccountDto(savedCountry);
 	}
 
 }
