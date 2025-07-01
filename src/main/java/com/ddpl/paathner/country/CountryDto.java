@@ -1,5 +1,6 @@
 package com.ddpl.paathner.country;
 
+<<<<<<< HEAD
 import java.time.LocalDateTime;
 
 import com.ddpl.paathner.country.Country.CountryStatus;
@@ -15,4 +16,8 @@ public class CountryDto {
 	private CountryStatus countryStatus;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
+=======
+public class CountryDto {
+
+>>>>>>> f25ed032609158c4d39bcdd8612209d2085bd6ce
 }
