@@ -39,9 +39,7 @@ public class CountryDto {
 	@NotNull(message="{message.COUNTRY_STATUS.REQUIRED}",groups = {onCreate.class,onUpdate.class})
 	private CountryStatus countryStatus;
 	
-	
 	private LocalDateTime createdAt;
-	
 	
 	private LocalDateTime updatedAt;
 
