@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 
 import com.ddpl.paathner.common.constants.ResponseConstants;
 
@@ -51,6 +52,29 @@ public class ApiResponseUtil {
 
 	public static ResponseEntity<Map<String, Object>> error(String message) {
 		return error(message, null, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	public static ResponseEntity<Map<String, Object>> validationError(BindingResult result) {
+		Map<String, String> fieldErrorMap = new LinkedHashMap<>();
+		result.getFieldErrors().forEach(error -> {
+			String fieldName = error.getField();
+			Object rejectedValue = error.getRejectedValue();
+
+			if (!fieldErrorMap.containsKey(fieldName)) {
+				if (rejectedValue == null || rejectedValue.toString().trim().isEmpty()) {
+					if (error.getCode().equals("NotBlank") || error.getCode().equals("NotNull")) {
+						fieldErrorMap.put(fieldName, error.getDefaultMessage());
+					}
+				} else {
+					fieldErrorMap.put(fieldName, error.getDefaultMessage());
+				}
+			}
+		});
+		String errorMessage = String.join("\n", fieldErrorMap.values());
+		Map<String, Object> response = new LinkedHashMap<>();
+		response.put("Status", ResponseConstants.FAIL);
+		response.put("Message", errorMessage);
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
 }
