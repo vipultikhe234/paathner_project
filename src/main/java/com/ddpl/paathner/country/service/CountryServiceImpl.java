@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.ddpl.paathner.common.exception.ResourceNotFoundException;
 import com.ddpl.paathner.common.helper.ApiResponseUtil;
 import com.ddpl.paathner.country.Country;
 import com.ddpl.paathner.country.CountryDto;
@@ -35,6 +36,14 @@ public class CountryServiceImpl implements CountryService {
 					LocaleContextHolder.getLocale());
 			return ApiResponseUtil.error(message, null, HttpStatus.BAD_REQUEST);
 		}
+	}
+
+	@Override
+	public ResponseEntity<Map<String, Object>> getCountryById(Long id) {
+		Country country = countryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Country"));
+		String message = messageSource.getMessage("message.COUNTRY_GET_SUCCESS", null, LocaleContextHolder.getLocale());
+		CountryDto countryDto=CountryMapper.mapToAccountDto(country);
+		return ApiResponseUtil.success(message, "Data", countryDto);
 	}
 
 }
