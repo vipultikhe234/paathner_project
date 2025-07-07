@@ -9,7 +9,7 @@ public class CountryMapper {
 		return country;
 	}
 
-	public static CountryDto mapToAccountDto(Country country) {
+	public static CountryDto mapToCountryDto(Country country) {
 		CountryDto countryDto = new CountryDto(country.getCountryId(), country.getCountryCode(),
 				country.getMobileCode(), country.getCountryName(), country.getCountryStatus(), country.getCreatedAt(),
 				country.getUpdatedAt());

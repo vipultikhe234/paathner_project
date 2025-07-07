@@ -11,5 +11,9 @@ public interface CountryService {
 	ResponseEntity<Map<String, Object>> insertCountry(CountryDto countryDto);
 	
 	ResponseEntity<Map<String, Object>> getCountryById(Long id);
-
+	
+	ResponseEntity<Map<String, Object>> UpdateCountry(Long id,CountryDto countryDto);
+	
+	ResponseEntity<Map<String, Object>> getCountryListing();
+	
 }

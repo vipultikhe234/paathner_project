@@ -1,5 +1,6 @@
 package com.ddpl.paathner.country.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.ddpl.paathner.country.Country;
 import com.ddpl.paathner.country.CountryDto;
 import com.ddpl.paathner.country.CountryMapper;
 import com.ddpl.paathner.country.CountryRepository;
+import com.ddpl.paathner.country.projection.GetCountryProjection;
 
 @Service
 public class CountryServiceImpl implements CountryService {
@@ -40,10 +42,40 @@ public class CountryServiceImpl implements CountryService {
 
 	@Override
 	public ResponseEntity<Map<String, Object>> getCountryById(Long id) {
-		Country country = countryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Country"));
+		GetCountryProjection country = countryRepository.findCountryViewById(id).orElseThrow(() -> new ResourceNotFoundException("Country"));
 		String message = messageSource.getMessage("message.COUNTRY_GET_SUCCESS", null, LocaleContextHolder.getLocale());
-		CountryDto countryDto=CountryMapper.mapToAccountDto(country);
-		return ApiResponseUtil.success(message, "Data", countryDto);
+		return ApiResponseUtil.success(message, "Data", country);
+	}
+
+	@Override
+	public ResponseEntity<Map<String, Object>> UpdateCountry(Long id, CountryDto countryDto) {
+		Country country = countryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Country"));
+		country.setCountryCode(countryDto.getCountryCode());
+		country.setMobileCode(countryDto.getMobileCode());
+		country.setCountryName(countryDto.getCountryName());
+		country.setCountryStatus(countryDto.getCountryStatus());
+		Country updateCountry = countryRepository.save(country);
+		if (updateCountry != null) {
+			String message = messageSource.getMessage("message.COUNTRY_UPDATE", null, LocaleContextHolder.getLocale());
+			return ApiResponseUtil.success(message, "Data", updateCountry.getCountryId());
+		} else {
+
+			String message = messageSource.getMessage("message.COUNTRY_UPDATE_FAILED", null,
+					LocaleContextHolder.getLocale());
+			return ApiResponseUtil.error(message, null, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@Override
+	public ResponseEntity<Map<String, Object>> getCountryListing() {
+		List<GetCountryProjection> country = countryRepository.getAllCountries();
+		if (country == null || country.isEmpty()) {
+			String message = messageSource.getMessage("message.DATA_NOT_FOUND", null, LocaleContextHolder.getLocale());
+			return ApiResponseUtil.error(message, null, HttpStatus.NOT_FOUND);
+		}
+		String message = messageSource.getMessage("message.COUNTRY_GET_SUCCESS", null, LocaleContextHolder.getLocale());
+		return ApiResponseUtil.success(message, "Data", country);
+
 	}
 
 }

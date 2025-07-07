@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CountryDto {
-	@NotBlank(message = "{message.COUNTRY_ID.REQUIRED}", groups = { onGetByCountryId.class, onUpdate.class})
+	@NotNull(message = "{message.COUNTRY_ID.REQUIRED}", groups = { onGetByCountryId.class, onUpdate.class})
 	private long countryId;
 
 	@NotBlank(message = "{message.COUNTRY_CODE.REQUIRED}", groups = { onCreate.class, onUpdate.class })
