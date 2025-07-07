@@ -16,4 +16,6 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
 	
 	@Query("SELECT c FROM Country c WHERE c.id = :id")
 	Optional<GetCountryProjection> findCountryViewById(@Param("id") Long id); 
+	
+	boolean existsByCountryNameIgnoreCase(String CounteryName);
 }

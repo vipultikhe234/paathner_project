@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.ddpl.paathner.common.exception.DuplicateResourceException;
 import com.ddpl.paathner.common.exception.ResourceNotFoundException;
 import com.ddpl.paathner.common.helper.ApiResponseUtil;
 import com.ddpl.paathner.country.Country;
@@ -29,6 +30,11 @@ public class CountryServiceImpl implements CountryService {
 	@Override
 	public ResponseEntity<Map<String, Object>> insertCountry(CountryDto countryDto) {
 		Country country = CountryMapper.mapToCountry(countryDto);
+		if (countryRepository.existsByCountryNameIgnoreCase(country.getCountryName())) {
+			String message = messageSource.getMessage("message.DUPLICATE_COUNTRY", null,
+					LocaleContextHolder.getLocale());
+			throw new DuplicateResourceException(message);
+		}
 		Country savedCountry = countryRepository.save(country);
 		if (savedCountry != null) {
 			String message = messageSource.getMessage("message.COUNTRY_SAVED", null, LocaleContextHolder.getLocale());
@@ -42,7 +48,8 @@ public class CountryServiceImpl implements CountryService {
 
 	@Override
 	public ResponseEntity<Map<String, Object>> getCountryById(Long id) {
-		GetCountryProjection country = countryRepository.findCountryViewById(id).orElseThrow(() -> new ResourceNotFoundException("Country"));
+		GetCountryProjection country = countryRepository.findCountryViewById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Country"));
 		String message = messageSource.getMessage("message.COUNTRY_GET_SUCCESS", null, LocaleContextHolder.getLocale());
 		return ApiResponseUtil.success(message, "Data", country);
 	}

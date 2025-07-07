@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @EnableJpaAuditing
-@EntityScan(basePackages = "com.ddpl.paathner.country")
 public class PaathnerApplication {
 
 	public static void main(String[] args) {
