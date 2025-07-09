@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.ddpl.paathner.country.validation.onCreate;
 import com.ddpl.paathner.user.User.UserStatus;
+import com.ddpl.paathner.user.validation.onLogin;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -26,11 +27,11 @@ public class UserDto {
 	@Size(max = 255, message = "{message.USER_NAME.MAX}")
 	private String userName;
 
-	@NotBlank(message = "{message.USER_EMAIL.REQUIRED}", groups = onCreate.class)
+	@NotBlank(message = "{message.USER_EMAIL.REQUIRED}", groups = { onCreate.class, onLogin.class })
 	@Email(message = "{message.USER_EMAIL.INVALID}", groups = onCreate.class)
 	private String email;
 
-	@NotBlank(message = "{message.USER_PASSWORD.REQUIRED}", groups = onCreate.class)
+	@NotBlank(message = "{message.USER_PASSWORD.REQUIRED}", groups = { onCreate.class, onLogin.class })
 	@Size(min = 8, max = 15, message = "{message.USER_PASSWORD.SIZE}", groups = onCreate.class)
 	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "{message.USER_PASSWORD.WEAK}", groups = onCreate.class)
 	private String userPassword;
