@@ -1,13 +1,12 @@
 package com.ddpl.paathner.country;
 
-import java.util.List;
 
 public class CountryMapper {
 
 	public static Country mapToCountry(CountryDto countryDto) {
 		Country country = new Country(countryDto.getCountryId(), countryDto.getCountryCode(),
 				countryDto.getMobileCode(), countryDto.getCountryName(), countryDto.getCountryStatus(),
-				countryDto.getCreatedAt(), countryDto.getUpdatedAt());
+				countryDto.getCreatedAt(), countryDto.getUpdatedAt(),null);
 		return country;
 	}
 
